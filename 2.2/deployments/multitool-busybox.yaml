@@ -14,12 +14,13 @@ spec:
     spec:
       volumes:
         - name: shared-volume
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: pvc1
       containers:
         - name: network-multitool
           image: wbitt/network-multitool
           env:
-            - name: HTTP_PORT #Если приложение не использует переменную окружения, тогда containerPort: 8080 просто откроет порт 8080, на который можно будет направить трафик, но приложение может слушать на другом порту
+            - name: HTTP_PORT
               value: "8080"
           ports:
             - containerPort: 8080
