@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-html
+data:
+  index.html: |
+    <html>
+    <body>
+      <h1>NGINX-WEB</h1>
+      <h2>test_page</h2>
+    </body>
+    </html>
