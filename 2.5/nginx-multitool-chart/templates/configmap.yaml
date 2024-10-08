@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMapName }}
+  namespace: {{ .Values.namespace }}
+data:
+  index.html: |
+    {{ .Values.config.indexHtml | quote }}
+  HTTP_PORT: "{{ .Values.multitool.port }}"

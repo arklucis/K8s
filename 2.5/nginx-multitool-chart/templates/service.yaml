@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-svc
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  selector:
+    app: {{ .Release.Name }}
+  ports:
+    - name: nginx
+      protocol: TCP
+      port: {{ .Values.service.ports.nginx.port }}
+      targetPort: {{ .Values.service.ports.nginx.targetPort }}
+    - name: multitool
+      protocol: TCP
+      port: {{ .Values.service.ports.multitool.port }}
+      targetPort: {{ .Values.service.ports.multitool.targetPort }}
+  type: {{ .Values.service.type }}

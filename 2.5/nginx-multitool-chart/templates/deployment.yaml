@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: nginx
+          image: {{ .Values.nginx.image }}:{{ .Values.nginx.tag }}
+          ports:
+            - containerPort: {{ .Values.nginx.port }}
+              name: {{ .Values.service.ports.nginx.targetPort }}
+          volumeMounts:
+            - name: {{ .Values.configMapName }}
+              mountPath: usr/share/nginx/html
+        - name: multitool
+          image: {{ .Values.multitool.image }}
+          env:
+            - name: {{ .Values.multitool.envname }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configMapName }}
+                  key: {{ .Values.multitool.envname }}
+          ports:
+            - containerPort: {{ .Values.multitool.port }}
+              name: {{ .Values.service.ports.multitool.targetPort }}
+      volumes:
+        - name: {{ .Values.configMapName }}
+          configMap:
+            name: {{ .Values.configMapName }}

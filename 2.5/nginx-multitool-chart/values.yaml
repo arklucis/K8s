@@ -1,0 +1,33 @@
+replicas: 1
+
+namespace: app2
+
+nginx:
+  image: nginx
+  tag: 1.25.5
+  port: 80
+
+multitool:
+  image: "wbitt/network-multitool"
+  port: 8080
+  envname: "HTTP_PORT"
+
+config:
+  indexHtml: |
+    <html>
+    <body>
+      <h1>api</h1>
+    </body>
+    </html>
+
+configMapName: api-html
+
+service:
+  type: ClusterIP
+  ports:
+    nginx:
+      port: 9001
+      targetPort: "http"
+    multitool:
+      port: 9002
+      targetPort: "multi-port"
